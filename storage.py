@@ -1,6 +1,5 @@
 import json
 import os
-import csv
 
 
 def load_expenses(filepath="expenses.json"):
@@ -27,24 +26,3 @@ def save_expenses(expenses, filepath="expenses.json"):
             json.dump(expenses, f, indent=4, ensure_ascii=False)
     except IOError as e:
         print(f"❌ Kļūda saglabājot datus: {e}")
-
-def export_to_csv(expenses, filename="izdevumi_eksports.csv"):
-    """
-    Eksportē visus izdevumus uz CSV failu, ko var atvērt ar Excel.
-    Atgriež True, ja izdevās, vai False, ja saraksts tukšs.
-    """
-    if not expenses:
-        return False
-    
-    # Paņemam atslēgas no pirmā ieraksta kā kolonnu nosaukumus
-    headers = expenses[0].keys()
-    
-    try:
-        # encoding="utf-8-sig" palīdz Excel pareizi attēlot latviešu burtus
-        with open(filename, mode="w", newline="", encoding="utf-8-sig") as f:
-            writer = csv.DictWriter(f, fieldnames=headers)
-            writer.writeheader()
-            writer.writerows(expenses)
-        return True
-    except IOError:
-        return False

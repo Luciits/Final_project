@@ -1,6 +1,7 @@
 import storage
 from datetime import date, datetime
 import logic
+import export
 
 # Sākumā definējam konstantes
 CATEGORIES = ["Ēdiens", "Transports", "Izklaide", "Komunālie", "Veselība", "Iepirkšanās", "Cits"]
@@ -182,7 +183,7 @@ def main():
         elif choice == "5":
             delete_expense_ui(expenses)
         elif choice == "6":
-            if storage.export_to_csv(expenses):
+            if export.export_to_csv(expenses):
                 print("✅ Dati veiksmīgi eksportēti uz 'izdevumi_eksports.csv'!")
             else:
                 print("❌ Eksports neizdevās (saraksts ir tukšs vai radās kļūda).")
