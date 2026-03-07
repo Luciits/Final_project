@@ -166,6 +166,7 @@ def main():
         print("3) Filtrēt pēc mēneša")
         print("4) Kopsavilkums pa kategorijām")
         print("5) Dzēst izdevumu")
+        print("6) Eksportēt uz CSV")
         print("7) Iziet")
         
         choice = input("\nIzvēlies darbību: ")
@@ -180,6 +181,11 @@ def main():
             show_category_summary(expenses)
         elif choice == "5":
             delete_expense_ui(expenses)
+        elif choice == "6":
+            if storage.export_to_csv(expenses):
+                print("✅ Dati veiksmīgi eksportēti uz 'izdevumi_eksports.csv'!")
+            else:
+                print("❌ Eksports neizdevās (saraksts ir tukšs vai radās kļūda).")
         elif choice == "7":
             print("Uz redzēšanos!")
             break
