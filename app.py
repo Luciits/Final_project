@@ -164,7 +164,7 @@ def main():
         print("1) Pievienot izdevumu")
         print("2) Parādīt visus izdevumus")
         print("3) Filtrēt pēc mēneša")
-        print("4) Kopsavilkums pa katagorijām")
+        print("4) Kopsavilkums pa kategorijām")
         print("5) Dzēst izdevumu")
         print("7) Iziet")
         
