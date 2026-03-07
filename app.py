@@ -1,62 +1,90 @@
 import storage
-from datetime import date
+from datetime import date, datetime
+import logic
 
 # Sākumā definējam konstantes
 CATEGORIES = ["Ēdiens", "Transports", "Izklaide", "Komunālie", "Veselība", "Iepirkšanās", "Cits"]
+
+def is_valid_date(date_text):
+    """Pārbauda, vai teksts atbilst formātam YYYY-MM-DD."""
+    try:
+        datetime.strptime(date_text, "%Y-%m-%d")
+        return True
+    except ValueError:
+        return False
 
 def add_expense(expenses):
     """
     Nodrošina lietotāja saskarni jauna izdevuma pievienošanai.
     
-    Ievāc datus (datumu, kategoriju, summu, aprakstu), veic pamata 
-    validāciju un saglabā izmaiņas JSON failā.
+    Lietotājs ievada datumu, izvēlas kategoriju no saraksta, ievada summu 
+    un aprakstu. Dati tiek validēti un saglabāti JSON failā.
     """
     print("\n--- Pievienot jaunu izdevumu ---")
     
-    # Datums ar noklusējuma vērtību (šodiena)
+    # 1. Datums
     date_input = input(f"Datums (YYYY-MM-DD) [{date.today()}]: ") or str(date.today())
+    if not is_valid_date(date_input):
+        print(f"❌ Kļūda: '{date_input}' nav derīgs datums! Lieto formātu YYYY-MM-DD.")
+        return
     
-    # Kategorijas izvēle
-    print("Izvēlies kategoriju:")
+    # 2. Kategorijas izvēle
+    print("Pieejamās kategorijas:")
     for i, cat in enumerate(CATEGORIES, 1):
         print(f"{i}) {cat}")
     
     try:
-        cat_choice = int(input("Izvēle (numurs): "))
-        category = CATEGORIES[cat_choice - 1]
-        
-        amount = float(input("Summa (EUR): "))
+        choice = int(input("Izvēlies kategorijas numuru (1-7): "))
+        if 1 <= choice <= len(CATEGORIES):
+            category = CATEGORIES[choice - 1]  # Šeit mēs iegūstam tekstu, piem., "Ēdiens"
+        else:
+            print("❌ Kļūda: Nepareizs numurs!")
+            return
+
+        # 3. Summa
+        amount_input = input("Summa (EUR): ")
+        amount = float(amount_input)
+        if amount <= 0:
+            print("❌ Kļūda: Summai jābūt pozitīvai!")
+            return
+
+        # 4. Apraksts
         description = input("Apraksts: ") or "Nav apraksta"
         
-        # Izveidojam jauno ierakstu
-        new_expense = {
+        # Izveidojam ierakstu
+        new_item = {
             "date": date_input,
-            "amount": amount,
+            "amount": round(amount, 2),
             "category": category,
             "description": description
         }
         
-        expenses.append(new_expense)
+        expenses.append(new_item)
         storage.save_expenses(expenses)
-        print("✅ Izdevums saglabāts!")
+        print(f"✅ Pievienots: {category} | {amount:.2f} EUR")
         
-    except (ValueError, IndexError):
-        print("❌ Kļūda: Nepareiza ievade. Mēģini vēlreiz.")
+    except ValueError:
+        print("❌ Kļūda: Summai un izvēlei jābūt skaitļiem!")
 
 def show_all_expenses(expenses):
     """
-    Formatē un izvada terminālī visus reģistrētos izdevumus.
-    
-    Ja saraksts ir tukšs, informē lietotāju. Beigās izvada 
-    visu izdevumu kopsummu, izmantojot logic moduli.
+    Formatē un izvada terminālī visus reģistrētos izdevumus ar kopsummu.
     """
     print("\n--- Visi izdevumi ---")
     if not expenses:
         print("Saraksts ir tukšs.")
         return
 
+    print(f"{'Datums':<12} | {'Summa':>10} | {'Kategorija':<15} | {'Apraksts'}")
+    print("-" * 55)
+    
     for exp in expenses:
-        print(f"{exp['date']} | {exp['amount']:.2f} EUR | {exp['category']} | {exp['description']}")
+        print(f"{exp['date']:<12} | {exp['amount']:>8.2f} EUR | {exp['category']:<15} | {exp['description']}")
+    # IZMANTOJAM LOGIC MODULI
+    total = logic.sum_total(expenses)
+    print("-" * 55)
+    print(f"{'KOPĀ:':<12} | {total:>8.2f} EUR")
+
 
 def main():
     """
