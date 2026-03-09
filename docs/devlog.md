@@ -30,6 +30,9 @@
 - **Izaicinājumi:** Mainīgo redzamība (scope). Funkcijai add_expense bija nepieciešama piekļuve budget_limit, kas definēts main() ciklā.
 - **Risiājums:** Funkcija tika refaktorēta, pievienojot budget_limit kā argumentu. Tas nodrošināja tīru datu plūsmu un ļāva parādīt brīdinājumu uzreiz pēc datu saglabāšanas.
 - **Datu struktūra:** Izvēlēts atsevišķs budget.json fails, lai nejauktu konfigurācijas datus ar darījumu sarakstu.
-
+## 7. Posms: Paplašināta analītika
+- **Darbība:** paplašinātas statistikas iespējas kas norāda vidējo izdevumu dienā un dārgāko kategoriju
+- **Izaicinājumi:** Datu kārtošana vārdnīcās. Iemācījos izmantot `sorted()` ar `lambda` funkciju, lai kategoriju kopsavilkumā augšgalā vienmēr būtu lielākie tēriņi.
+- **Risinājums:** Ieviesu validāciju `if total_sum > 0`, kas šādos gadījumos atgriež 0%, novēršot programmas "nobrukšanu".
 ## Secinājumi
 Projekta gaitā iemācījos strādāt ar Git zariem (`merge`), strukturēt kodu vairākos failos un veikt datu validāciju, lai lietotājs nevarētu "salauzt" programmu.

@@ -7,7 +7,9 @@ import export
 CATEGORIES = ["Ēdiens", "Transports", "Izklaide", "Komunālie", "Veselība", "Iepirkšanās", "Cits"]
 
 def is_valid_date(date_text):
-    """Pārbauda, vai teksts atbilst formātam YYYY-MM-DD."""
+    """
+    Pārbauda, vai teksts atbilst formātam YYYY-MM-DD.
+    """
     try:
         datetime.strptime(date_text, "%Y-%m-%d")
         return True
@@ -90,7 +92,9 @@ def show_all_expenses(expenses):
     print(f"{'KOPĀ:':<12} | {total:>8.2f} EUR")
 
 def filter_expenses_ui(expenses):
-    """Ļauj lietotājam izvēlēties mēnesi un parāda tā izdevumus."""
+    """
+    Ļauj lietotājam izvēlēties mēnesi un parāda tā izdevumus.
+    """
     months = logic.get_available_months(expenses)
     if not months:
         print("Nav pieejamu datu filtrēšanai.")
@@ -107,17 +111,33 @@ def filter_expenses_ui(expenses):
         
         filtered = logic.filter_by_month(expenses, year, month)
         show_all_expenses(filtered) # Izmantojam jau esošo tabulas funkciju!
+        analysis = logic.get_full_analysis(filtered)
+        if analysis:
+            print(f"\n--- {selected_month} Statistika ---")
+            print(f"Vidēji dienā: {analysis['daily_avg']} EUR")
+            print(f"Dārgākā kategorija: {analysis['top_category']}")
+            print(f"Ierakstu skaits: {analysis['entry_count']}")
     except (ValueError, IndexError):
         print("❌ Nepareiza izvēle.")
     
 def show_category_summary(expenses):
-    """Parāda, cik iztērēts katrā kategorijā."""
-    summary = logic.sum_by_category(expenses)
-    print("\n--- Kopsavilkums pa kategorijām ---")
-    for cat, total in summary.items():
-        print(f"{cat:<20}: {total:>8.2f} EUR")
-    print("-" * 30)
-    print(f"{'KOPĀ':<20}: {logic.sum_total(expenses):>8.2f} EUR")
+    """
+    Parāda, cik iztērēts katrā kategorijā.
+    """
+    analysis = logic.get_full_analysis(expenses)
+    if not analysis:
+        print("\nNav datu kopsavilkuma izveidei.")
+        return
+
+    print(f"\n--- Kopsavilkums pa kategorijām ({analysis['entry_count']} ieraksti) ---")
+    print(f"{'Kategorija':<20} | {'Summa':>10} | {'Daļa %'}")
+    print("-" * 45)
+
+    for cat in analysis['categories']:
+        print(f"{cat['name']:<20} | {cat['amount']:>8.2f} EUR | {cat['percentage']:>5}%")
+    
+    print("-" * 45)
+    print(f"{'KOPĀ:':<20} | {analysis['total_sum']:>8.2f} EUR | 100%")
     
 def delete_expense_ui(expenses):
     """
