@@ -25,3 +25,6 @@ Vienkārša un efektīva komandrindas lietojumprogramma personīgo finanšu uzsk
 4. Palaidiet programmu ar komandu:
    ```bash
    python app.py
+
+## Autors
+Artūrs V. Luters - Programmēšanas pamati, 2026
