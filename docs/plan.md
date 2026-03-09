@@ -51,6 +51,10 @@ load_expenses(): Nolasa expenses.json failu. Ja fails neeksistē, atgriež tukš
 
 save_expenses(expenses): Pārraksta JSON failu ar aktuālo sarakstu, izmantojot indent=4 lasāmībai.
 
+save_budget(): Saglabā lietotāja mēneša budžetu budget.json failā
+
+load_budget(): Nolasa budget.json failu ja fails neeksistē, atgriež tukšu sarakstu, lai novērstu kļūdas.
+
 logic.py (Biznesa loģika)
 Šis ir "tīrs" modulis. Tas satur tikai funkcijas, kas apstrādā datus (sarakstus un vārdnīcas), un tajā netiek izmantoti print() vai input().
 
@@ -63,6 +67,8 @@ sum_total(expenses): Aprēķina kopējo summu jebkuram padotam sarakstam.
 sum_by_category(expenses): Izveido kopsavilkumu (vārdnīcu), kur atslēgas ir kategorijas un vērtības ir kopējie izdevumi tajās.
 
 get_available_months(expenses): Analizē visus ierakstus un izvelk unikālus mēnešus filtrēšanas izvēlnei.
+
+get_budget_status(): Aprēķina starpību starp kopējiem tēriņiem un iestatīto limitu, izdod brīdinājumu ja limits ir pārtērēts
 
 export.py (Datu eksports)
 Modulis, kas nodrošina datu pārnešanu uz citiem formātiem.
@@ -125,3 +131,7 @@ Ja sarakstā nav neviena ieraksta, komanda ""Dzēst izdevumu"" uzreiz informēs 
 
 Nepareizs datuma formāts
 Izmantojot datetime.strptime(), jebkurš formāts, kas nav YYYY-MM-DD, tiks noķerts ar ValueError un lietotājam lūgts ievadīt datumu atkārtoti.
+
+Budžeta pārsniegšana: Programma aprēķina statusu pēc katra jauna izdevuma pievienošanas. Ja limits ir pārsniegts, lietotājam tiek parādīts vizuāls brīdinājums ar precīzu pārtēriņa summu.
+
+Nenoteikts budžets: Ja lietotājs nav iestatījis limitu (vērtība 0), brīdinājumi netiek rādīti, nodrošinot elastību tiem, kas vēlas tikai reģistrēt datus.

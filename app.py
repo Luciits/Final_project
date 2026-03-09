@@ -14,7 +14,7 @@ def is_valid_date(date_text):
     except ValueError:
         return False
 
-def add_expense(expenses):
+def add_expense(expenses, budget_limit):
     """
     Nodrošina lietotāja saskarni jauna izdevuma pievienošanai.
     
@@ -63,6 +63,9 @@ def add_expense(expenses):
         expenses.append(new_item)
         storage.save_expenses(expenses)
         print(f"✅ Pievienots: {category} | {amount:.2f} EUR")
+        status = logic.get_budget_status(expenses, budget_limit)
+        if budget_limit > 0 and status["is_over"]:
+            print(f"⚠️ BRĪDINĀJUMS: Budžeta limits ({budget_limit:.2f}) ir pārsniegts par {abs(status['remaining']):.2f} EUR!")
         
     except ValueError:
         print("❌ Kļūda: Summai un izvēlei jābūt skaitļiem!")
@@ -159,8 +162,14 @@ def main():
     """
     # Ielādējam datus programmas sākumā
     expenses = storage.load_expenses()
+    budget_limit = storage.load_budget()
     
     while True:
+        if budget_limit > 0:
+            status = logic.get_budget_status(expenses, budget_limit)
+            print(f"\n--- Budžets: {status['total']:.2f} / {budget_limit:.2f} EUR ---")
+            if status["is_over"]:
+                print(f"⚠️ UZMANĪBU: Pārtēriņš {abs(status['remaining']):.2f} EUR!")
         print("\n=== IZDEVUMU IZSEKOTĀJS ===")
         print("1) Pievienot izdevumu")
         print("2) Parādīt visus izdevumus")
@@ -168,12 +177,13 @@ def main():
         print("4) Kopsavilkums pa kategorijām")
         print("5) Dzēst izdevumu")
         print("6) Eksportēt uz CSV")
-        print("7) Iziet")
+        print("7) Iestatīt budžeta limitu")
+        print("8) Iziet")
         
         choice = input("\nIzvēlies darbību: ")
         
         if choice == "1":
-            add_expense(expenses)
+            add_expense(expenses, budget_limit)
         elif choice == "2":
             show_all_expenses(expenses)
         elif choice == "3":
@@ -188,6 +198,17 @@ def main():
             else:
                 print("❌ Eksports neizdevās (saraksts ir tukšs vai radās kļūda).")
         elif choice == "7":
+            try:
+                new_limit = float(input("Ievadi mēneša budžeta limitu (EUR): "))
+                if new_limit >= 0:
+                    budget_limit = new_limit
+                    storage.save_budget(budget_limit)
+                    print(f"✅ Budžeta limits iestatīts: {budget_limit:.2f} EUR")
+                else:
+                    print("❌ Limitam jābūt pozitīvam skaitlim.")
+            except ValueError:
+                print("❌ Kļūda: Ievadiet derīgu skaitli.")
+        elif choice == "8":
             print("Uz redzēšanos!")
             break
         else:

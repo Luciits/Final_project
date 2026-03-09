@@ -24,5 +24,12 @@
 - **Lēmums:** Sākotnēji eksports bija `storage.py`, bet saskaņā ar plānu tas tika pārcelts uz atsevišķu moduli `export.py`, lai ievērotu "Single Responsibility Principle".
 - **Detaļa:** Izmantots `utf-8-sig` kodējums, lai Excel atpazītu latviešu burtus.
 
+## 6. Posms: Budžeta limita kontrole
+- **Datums:** 2026-03-09
+- **Darbība:** Ieviesta iespēja iestatīt mēneša tēriņu griestus.
+- **Izaicinājumi:** Mainīgo redzamība (scope). Funkcijai add_expense bija nepieciešama piekļuve budget_limit, kas definēts main() ciklā.
+- **Risiājums:** Funkcija tika refaktorēta, pievienojot budget_limit kā argumentu. Tas nodrošināja tīru datu plūsmu un ļāva parādīt brīdinājumu uzreiz pēc datu saglabāšanas.
+- **Datu struktūra:** Izvēlēts atsevišķs budget.json fails, lai nejauktu konfigurācijas datus ar darījumu sarakstu.
+
 ## Secinājumi
 Projekta gaitā iemācījos strādāt ar Git zariem (`merge`), strukturēt kodu vairākos failos un veikt datu validāciju, lai lietotājs nevarētu "salauzt" programmu.
