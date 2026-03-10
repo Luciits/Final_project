@@ -198,7 +198,8 @@ def main():
         print("5) Dzēst izdevumu")
         print("6) Eksportēt uz CSV")
         print("7) Iestatīt budžeta limitu")
-        print("8) Iziet")
+        print("8) Meklēt izdevumus")
+        print("9) Iziet")
         
         choice = input("\nIzvēlies darbību: ")
         
@@ -229,6 +230,14 @@ def main():
             except ValueError:
                 print("❌ Kļūda: Ievadiet derīgu skaitli.")
         elif choice == "8":
+            query = input("\nIevadi meklējamo vārdu: ")
+            results = [e for e in expenses if query.lower() in e['description'].lower()]
+            if results:
+                print(f"\n🔍 Atrasti {len(results)} ieraksti:")
+                show_all_expenses(results)
+            else:
+                print(f"\n❌ Nekas netika atrasts pēc frāzes: '{query}'")
+        elif choice == "9":
             print("Uz redzēšanos!")
             break
         else:

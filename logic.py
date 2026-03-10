@@ -89,3 +89,13 @@ def get_full_analysis(expenses):
         "unique_days": len(unique_dates),
         "categories": category_summary
     }
+
+def search_expenses(expenses, query):
+    """
+    Meklē izdevumus, kuru aprakstā ir meklētā frāze.
+    """
+    query = query.lower()
+    return [
+        exp for exp in expenses 
+        if query in exp["description"].lower()
+    ]
