@@ -220,7 +220,7 @@ def main():
                 print("❌ Eksports neizdevās (saraksts ir tukšs vai radās kļūda).")
         elif choice == "7":
             try:
-                new_limit = float(input("Ievadi mēneša budžeta limitu (EUR): "))
+                new_limit = float(input("Ievadi mēneša budžeta limitu (EUR) (ievadi 0, lai atceltu): "))
                 if new_limit >= 0:
                     budget_limit = new_limit
                     storage.save_budget(budget_limit)

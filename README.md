@@ -18,6 +18,12 @@ Vienkārša un efektīva komandrindas lietojumprogramma personīgo finanšu uzsk
 - `export.py` - CSV eksporta funkcionalitāte.
 - `docs/plan.md` - Detalizēts izstrādes plāns un arhitektūras apraksts.
 
+### ✨ Bonusa iespējas
+- **Budžeta kontrole:** Iespēja iestatīt mēneša limitu un saņemt brīdinājumus par tā pārsniegšanu.
+- **Padziļināta analītika:** Automātiska vidējo dienas tēriņu aprēķināšana un dārgākās kategorijas noteikšana.
+- **Datu meklēšana:** Ātra izdevumu atrašana pēc apraksta atslēgvārdiem.
+- **Procentuālais sadalījums:** Kategoriju kopsavilkumā redzams katras nozares īpatsvars kopējā budžetā.
+
 ## Uzstādīšana un palaišana
 1. Pārliecinieties, ka datorā ir uzstādīts Python 3.
 2. Lejupielādējiet projekta failus.
